@@ -107,7 +107,7 @@ opt = SGD(learning_rate=0.01, decay=0.01 / 120, momentum=0.9, nesterov=True)
 model_vgg.compile(optimizer=opt, loss="categorical_crossentropy", metrics=["accuracy"])
 
 print("[INFO] training network...")
-augmentation = True
+augmentation = False
 if augmentation:
     # construct the image generator for data augmentation
     aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1, height_shift_range=0.1,
