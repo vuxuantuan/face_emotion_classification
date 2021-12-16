@@ -27,13 +27,13 @@ for index, row in data.iterrows():
 
     image = np.reshape(list_pixels, (48, 48))
 
-    if usage == "Training":
+    if usage == "train":
         train_data.append(image)
         train_label.append(emotion)
-    elif usage == "PrivateTest":
+    elif usage == "val":
         val_data.append(image)
         val_label.append(emotion)
-    elif usage == "PublicTest":
+    elif usage == "test":
         test_data.append(image)
         test_label.append(emotion)
 
@@ -77,10 +77,24 @@ model.compile(loss="categorical_crossentropy", optimizer=opt,
 # train the network
 print("[INFO] training network...")
 H = model.fit(train_data, train_label, validation_data=(val_data, val_label),
-              batch_size=64, epochs=120, verbose=1)
+              batch_size=32, epochs=120, verbose=1)
 
 # evaluate the network
 print("[INFO] evaluating network...")
-predictions = model.predict(test_data, batch_size=64)
+predictions = model.predict(test_data, batch_size=32)
 print(classification_report(test_label.argmax(axis=1),
                             predictions.argmax(axis=1), target_names=[str(x) for x in le.classes_]))
+
+
+# plot the training loss and accuracy
+plt.style.use("ggplot")
+plt.figure()
+plt.plot(np.arange(0, 120), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, 120), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, 120), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, 120), H.history["val_accuracy"], label="val_acc")
+plt.title("train Loss and Accuracy")
+plt.xlabel("Epoch #")
+plt.ylabel("Loss/Accuracy")
+plt.legend()
+plt.show()

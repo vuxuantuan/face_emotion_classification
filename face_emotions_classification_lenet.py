@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 
+import matplotlib
+matplotlib.use("Agg")
 from keras.preprocessing.image import ImageDataGenerator
 
 datagen = ImageDataGenerator(
@@ -42,13 +44,13 @@ for index, row in data.iterrows():
 
     image = np.reshape(list_pixels, (48, 48))
 
-    if usage == "Training":
+    if usage == "train":
         train_data.append(image)
         train_label.append(emotion)
-    elif usage == "PrivateTest":
+    elif usage == "val":
         val_data.append(image)
         val_label.append(emotion)
-    elif usage == "PublicTest":
+    elif usage == "test":
         test_data.append(image)
         test_label.append(emotion)
 
@@ -70,7 +72,7 @@ else:
     test_data = test_data.reshape((test_data.shape[0], 48, 48, 1))
 
 print(train_data[0].shape)
-
+print(train_label.shape)
 # scale data to the range of [0, 1]
 train_data = train_data.astype("float32") / 255.0
 val_data = val_data.astype("float32") / 255.0
@@ -95,7 +97,7 @@ model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy
 print("[INFO] training network...")
 H = model.fit(train_data, train_label,
               validation_data=(val_data, val_label), batch_size=128,
-              epochs=20, verbose=1)
+              epochs=64, verbose=1)
 
 # evaluate the network
 print("[INFO] evaluating network...")
@@ -107,11 +109,11 @@ print(classification_report(test_label.argmax(axis=1),
 # plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, 20), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, 20), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, 20), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, 20), H.history["val_accuracy"], label="val_acc")
-plt.title("Training Loss and Accuracy")
+plt.plot(np.arange(0, 64), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, 64), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, 64), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, 64), H.history["val_accuracy"], label="val_acc")
+plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend()

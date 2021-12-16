@@ -33,7 +33,7 @@ for index, row in data.iterrows():
     elif usage == "PrivateTest":
         val_data.append(image)
         val_label.append(emotion)
-    elif usage == "PublicTest":
+    elif usage == "test":
         test_data.append(image)
         test_label.append(emotion)
 
@@ -94,7 +94,7 @@ plt.plot(np.arange(0, 20), H.history["loss"], label="train_loss")
 plt.plot(np.arange(0, 20), H.history["val_loss"], label="val_loss")
 plt.plot(np.arange(0, 20), H.history["accuracy"], label="train_acc")
 plt.plot(np.arange(0, 20), H.history["val_accuracy"], label="val_acc")
-plt.title("Training Loss and Accuracy")
+plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend()
