@@ -26,7 +26,7 @@ if K.image_data_format() == "channels_first":
 
 model = VGG16(weights='imagenet', include_top=False, input_shape=input_shape, pooling='max')
 # model = VGG16(weights='imagenet')
-# print(model.summary())
+print(model.summary())
 
 input_model = Input(shape=input_shape, name='image_input')
 input_model = preprocess_input(input_model)
