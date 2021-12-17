@@ -41,12 +41,13 @@ x = Dense(7, activation='softmax', name='predictions')(x)
 model_vgg = Model(inputs=input_model, outputs=x)
 print(model_vgg.summary())
 plot_model(model_vgg, to_file="vgg16.png", show_shapes=True, show_layer_names=True, show_layer_activations=True,
-           expand_nested=True, show_dtype=True)
+           show_dtype=True)
 
 """load data from csv"""
 data = pandas.read_csv("fer2013.csv")
 
 # convert data to image, label and split data to trainData, valData, testData
+pre_train_imagenet = True
 train_data = []
 train_label = []
 val_data = []
@@ -63,8 +64,9 @@ for index, row in data.iterrows():
 
     image = np.reshape(list_pixels, (48, 48))
 
-    # convert image to 3 channels for pretrain vgg
-    image = cv2.merge([image, image, image])
+    # convert image to 3 channels for pretrain vgg or resnet
+    if pre_train_imagenet:
+        image = cv2.merge([image, image, image])
 
     if usage == "Training":
         train_data.append(image)
@@ -141,5 +143,5 @@ plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend()
-plt.savefig("ResNet50.png")
+plt.savefig("Loss_VGG16.png")
 plt.show()

@@ -35,7 +35,7 @@ x = Dense(7, activation='softmax', name='predictions')(output_resnet_conv)
 model_resnet = Model(inputs=input_model, outputs=x)
 print(model_resnet.summary())
 plot_model(model_resnet, to_file="resnet50.png", show_shapes=True, show_layer_names=True, show_layer_activations=True,
-           expand_nested=True, show_dtype=True)
+           show_dtype=True)
 
 """load data from csv"""
 data = pandas.read_csv("fer2013.csv")
@@ -104,7 +104,7 @@ opt = SGD(learning_rate=0.01, decay=0.01 / 120, momentum=0.9, nesterov=True)
 model_resnet.compile(optimizer=opt, loss="categorical_crossentropy", metrics=["accuracy"])
 
 print("[INFO] training network...")
-augmentation = False
+augmentation = True
 if augmentation:
     # construct the image generator for data augmentation
     aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1, height_shift_range=0.1,
@@ -135,4 +135,5 @@ plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend()
+plt.savefig("Loss_ResNet50.png")
 plt.show()
