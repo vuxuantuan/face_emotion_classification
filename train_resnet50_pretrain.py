@@ -100,6 +100,7 @@ test_label = le.transform(test_label)
 
 # initialize the optimizer and model
 epochs = 200
+batch_size = 32
 print("[INFO] compiling model...")
 opt = SGD(learning_rate=0.01, decay=0.01 / epochs, momentum=0.9, nesterov=True)
 model_resnet.compile(optimizer=opt, loss="categorical_crossentropy", metrics=["accuracy"])
@@ -111,17 +112,17 @@ if augmentation:
     aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1, height_shift_range=0.1,
                              shear_range=0.2, zoom_range=0.2, horizontal_flip=True, fill_mode='nearest')
     # Train the networks with data augmentation
-    H = model_resnet.fit_generator(aug.flow(train_data, train_label, batch_size=32),
+    H = model_resnet.fit_generator(aug.flow(train_data, train_label, batch_size=batch_size),
                                    validation_data=(val_data, val_label),
-                                   steps_per_epoch=len(train_data) // 32, epochs=epochs, verbose=1)
+                                   steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1)
 else:
     # train the network
     H = model_resnet.fit(train_data, train_label, validation_data=(val_data, val_label),
-                         batch_size=32, epochs=epochs, verbose=1)
+                         batch_size=batch_size, epochs=epochs, verbose=1)
 
 # evaluate the network
 print("[INFO] evaluating network...")
-predictions = model_resnet.predict(test_data, batch_size=32)
+predictions = model_resnet.predict(test_data, batch_size=batch_size)
 print(classification_report(test_label.argmax(axis=1),
                             predictions.argmax(axis=1), target_names=[str(x) for x in le.classes_]))
 
