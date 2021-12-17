@@ -34,7 +34,8 @@ x = Dense(7, activation='softmax', name='predictions')(output_resnet_conv)
 
 model_resnet = Model(inputs=input_model, outputs=x)
 print(model_resnet.summary())
-plot_model(model_resnet, to_file="resnet50.png")
+plot_model(model_resnet, to_file="resnet50.png", show_shapes=True, show_layer_names=True, show_layer_activations=True,
+           expand_nested=True, show_dtype=True)
 
 """load data from csv"""
 data = pandas.read_csv("fer2013.csv")

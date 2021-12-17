@@ -40,7 +40,8 @@ x = Dense(7, activation='softmax', name='predictions')(x)
 
 model_vgg = Model(inputs=input_model, outputs=x)
 print(model_vgg.summary())
-plot_model(model_vgg, to_file="vgg16.png")
+plot_model(model_vgg, to_file="vgg16.png", show_shapes=True, show_layer_names=True, show_layer_activations=True,
+           expand_nested=True, show_dtype=True)
 
 """load data from csv"""
 data = pandas.read_csv("fer2013.csv")
