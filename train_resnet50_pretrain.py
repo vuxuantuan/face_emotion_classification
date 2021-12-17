@@ -99,8 +99,9 @@ val_label = le.fit_transform(val_label)
 test_label = le.transform(test_label)
 
 # initialize the optimizer and model
+epochs = 200
 print("[INFO] compiling model...")
-opt = SGD(learning_rate=0.01, decay=0.01 / 120, momentum=0.9, nesterov=True)
+opt = SGD(learning_rate=0.01, decay=0.01 / epochs, momentum=0.9, nesterov=True)
 model_resnet.compile(optimizer=opt, loss="categorical_crossentropy", metrics=["accuracy"])
 
 print("[INFO] training network...")
@@ -112,11 +113,11 @@ if augmentation:
     # Train the networks with data augmentation
     H = model_resnet.fit_generator(aug.flow(train_data, train_label, batch_size=32),
                                    validation_data=(val_data, val_label),
-                                   steps_per_epoch=len(train_data) // 32, epochs=120, verbose=1)
+                                   steps_per_epoch=len(train_data) // 32, epochs=epochs, verbose=1)
 else:
     # train the network
     H = model_resnet.fit(train_data, train_label, validation_data=(val_data, val_label),
-                         batch_size=32, epochs=120, verbose=1)
+                         batch_size=32, epochs=epochs, verbose=1)
 
 # evaluate the network
 print("[INFO] evaluating network...")
