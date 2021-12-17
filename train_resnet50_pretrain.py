@@ -12,6 +12,8 @@ from sklearn.preprocessing import LabelBinarizer
 import matplotlib.pyplot as plt
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import plot_model
+
 
 # create model for train
 height = 48
@@ -32,6 +34,7 @@ x = Dense(7, activation='softmax', name='predictions')(output_resnet_conv)
 
 model_resnet = Model(inputs=input_model, outputs=x)
 print(model_resnet.summary())
+plot_model(model_resnet, to_file="resnet50.png")
 
 """load data from csv"""
 data = pandas.read_csv("fer2013.csv")

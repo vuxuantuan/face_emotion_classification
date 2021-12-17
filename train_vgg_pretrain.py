@@ -14,6 +14,7 @@ from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib
 matplotlib.use("Agg")
+from tensorflow.keras.utils import plot_model
 
 # create model for train
 height = 48
@@ -39,6 +40,7 @@ x = Dense(7, activation='softmax', name='predictions')(x)
 
 model_vgg = Model(inputs=input_model, outputs=x)
 print(model_vgg.summary())
+plot_model(model_vgg, to_file="vgg16.png")
 
 """load data from csv"""
 data = pandas.read_csv("fer2013.csv")
@@ -138,4 +140,5 @@ plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend()
+plt.savefig("ResNet50.png")
 plt.show()
