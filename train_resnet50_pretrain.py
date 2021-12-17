@@ -100,7 +100,7 @@ test_label = le.transform(test_label)
 
 # initialize the optimizer and model
 epochs = 200
-batch_size = 32
+batch_size = 256
 print("[INFO] compiling model...")
 opt = SGD(learning_rate=0.01, decay=0.01 / epochs, momentum=0.9, nesterov=True)
 model_resnet.compile(optimizer=opt, loss="categorical_crossentropy", metrics=["accuracy"])
