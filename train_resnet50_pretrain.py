@@ -61,7 +61,7 @@ val_label = le.fit_transform(val_label)
 test_label = le.transform(test_label)
 
 """initialize the model and optimizer"""
-epochs = 200
+epochs = 120
 batch_size = 256
 print("[INFO] compiling model...")
 opt = utils.model_optims(epochs)
@@ -69,7 +69,6 @@ model_resnet.compile(optimizer=opt[2], loss="categorical_crossentropy", metrics=
 
 """ Training model"""
 print("[INFO] training network...")
-callbacks = [utils.model_early_stopping()]
 augmentation = True
 if augmentation:
     # construct the image generator for data augmentation
@@ -95,10 +94,10 @@ print(classification_report(test_label.argmax(axis=1),
 # plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, model_resnet.epochs), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, model_resnet.epochs), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, model_resnet.epochs), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, model_resnet.epochs), H.history["val_accuracy"], label="val_acc")
+plt.plot(np.arange(0, len(H.history["loss"])), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, len(H.history['val_loss'])), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, len(H.history['accuracy'])), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, len(H.history['val_accuracy'])), H.history["val_accuracy"], label="val_acc")
 plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")

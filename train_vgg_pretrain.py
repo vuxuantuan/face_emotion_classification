@@ -85,12 +85,12 @@ if augmentation:
     H = model_vgg.fit_generator(aug.flow(train_data, train_label, batch_size=batch_size),
                                 validation_data=(val_data, val_label),
                                 steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1,
-                                callbacks=callbacks, use_multiprocessing=True)
+                                use_multiprocessing=True)
 else:
     # train the network
     H = model_vgg.fit(train_data, train_label, validation_data=(val_data, val_label),
                       batch_size=batch_size, epochs=epochs, verbose=1,
-                      callbacks=callbacks, use_multiprocessing=True)
+                      use_multiprocessing=True)
 
 # evaluate the network
 print("[INFO] evaluating network...")
@@ -101,10 +101,10 @@ print(classification_report(test_label.argmax(axis=1),
 # plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, model_vgg.epochs), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, model_vgg.epochs), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, model_vgg.epochs), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, model_vgg.epochs), H.history["val_accuracy"], label="val_acc")
+plt.plot(np.arange(0, len(H.history["loss"])), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, len(H.history['val_loss'])), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, len(H.history['accuracy'])), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, len(H.history['val_accuracy'])), H.history["val_accuracy"], label="val_acc")
 plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
