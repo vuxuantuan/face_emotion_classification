@@ -69,7 +69,7 @@ model_resnet.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=
 
 """ Training model"""
 print("[INFO] training network...")
-callbacks = utils.model_callbacks()
+callbacks = [utils.model_early_stopping()]
 augmentation = True
 if augmentation:
     # construct the image generator for data augmentation
