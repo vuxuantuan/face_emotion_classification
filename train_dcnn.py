@@ -13,7 +13,7 @@ width = 48
 depth = 1
 classes = 7
 """Load data from csv"""
-train_data, train_label, val_data, val_label, test_data, test_label = utils.load_data_from_csv(config.data_fer)
+train_data, train_label, val_data, val_label, test_data, test_label = utils.load_data_from_csv(config.data_fer, False)
 
 if backend.image_data_format() == "channels_first":
     train_data = train_data.reshape((train_data.shape[0], depth, height, width))
