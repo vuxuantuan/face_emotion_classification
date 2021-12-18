@@ -65,7 +65,7 @@ epochs = 200
 batch_size = 256
 print("[INFO] compiling model...")
 opt = utils.model_optims(epochs)
-model_resnet.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=["accuracy"])
+model_resnet.compile(optimizer=opt[2], loss="categorical_crossentropy", metrics=["accuracy"])
 
 """ Training model"""
 print("[INFO] training network...")
@@ -79,12 +79,12 @@ if augmentation:
     H = model_resnet.fit(aug.flow(train_data, train_label, batch_size=batch_size),
                          validation_data=(val_data, val_label),
                          steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1,
-                         callbacks=callbacks, use_multiprocessing=True)
+                         use_multiprocessing=True)
 else:
     # train the network
     H = model_resnet.fit(train_data, train_label, validation_data=(val_data, val_label),
                          batch_size=batch_size, epochs=epochs, verbose=1,
-                         callbacks=callbacks, use_multiprocessing=True)
+                         use_multiprocessing=True)
 
 # evaluate the network
 print("[INFO] evaluating network...")
