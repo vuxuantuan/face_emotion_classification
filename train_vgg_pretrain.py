@@ -1,22 +1,19 @@
-from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.applications import VGG16
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input, Flatten, Dense
 from tensorflow.keras.applications.vgg16 import preprocess_input
 from tensorflow.keras import Model
 import numpy as np
-import pandas
-import cv2
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelBinarizer
 import matplotlib.pyplot as plt
-from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib
-matplotlib.use("Agg")
 from tensorflow.keras.utils import plot_model
 import config
 import utils
+matplotlib.use("Agg")
+
 
 # create model for train
 height = 48
@@ -104,10 +101,10 @@ print(classification_report(test_label.argmax(axis=1),
 # plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, H.epochs), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, H.epochs), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, H.epochs), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, H.epochs), H.history["val_accuracy"], label="val_acc")
+plt.plot(np.arange(0, model_vgg.epochs), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, model_vgg.epochs), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, model_vgg.epochs), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, model_vgg.epochs), H.history["val_accuracy"], label="val_acc")
 plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
