@@ -65,7 +65,7 @@ epochs = 200
 batch_size = 256
 print("[INFO] compiling model...")
 opt = utils.model_optims(epochs)
-model_resnet.compile(optimizer=opt[2], loss="categorical_crossentropy", metrics=["accuracy"])
+model_resnet.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=["accuracy"])
 
 """ Training model"""
 print("[INFO] training network...")
