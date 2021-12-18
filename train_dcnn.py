@@ -46,7 +46,7 @@ model_dcnn.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=["
 epochs = 200
 batch_size = 256
 callbacks = DCNN_callbacks()
-augmentation = True
+augmentation = False
 
 print("[INFO] training network...")
 if augmentation:
