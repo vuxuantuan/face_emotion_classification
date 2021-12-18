@@ -3,7 +3,7 @@ from sklearn.preprocessing import LabelBinarizer
 import config
 import utils
 from tensorflow.keras import backend
-from model import DCNN, DCNN_lr, DCNN_optims, DCNN_callbacks, DCNN_early_stopping
+from model import DCNN
 from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,14 +38,14 @@ test_label = le.transform(test_label)
 """initialize the model and optimizer"""
 model_dcnn = DCNN.build(height, width, depth, classes)
 print("[INFO] compiling model...")
+epochs = 200
 
-opt = DCNN_optims()
+opt = utils.model_optims(epochs)
 model_dcnn.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=["accuracy"])
 
 """ Training model"""
-epochs = 200
 batch_size = 256
-callbacks = DCNN_callbacks()
+callbacks = utils.model_callbacks()
 augmentation = False
 
 print("[INFO] training network...")

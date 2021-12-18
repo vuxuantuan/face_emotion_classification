@@ -58,29 +58,3 @@ class DCNN:
         model.add(Dense(classes, activation='softmax', name='Output_layer'))
 
         return model
-
-
-def DCNN_early_stopping():
-    early_stopping = EarlyStopping(monitor='val_accuracy', min_delta=0.00005, patience=11, verbose=1,
-                                   restore_best_weights=True)
-    return early_stopping
-
-
-def DCNN_lr():
-    lr_scheduler = ReduceLROnPlateau(monitor='val_accuracy', factor=0.5, patience=7, min_lr=1e-7, verbose=1)
-    return lr_scheduler
-
-
-def DCNN_callbacks():
-    early_stopping = DCNN_early_stopping()
-    lr_scheduler = DCNN_lr()
-    callbacks = [early_stopping, lr_scheduler]
-    return callbacks
-
-
-def DCNN_optims():
-    optims = [
-        optimizers.Nadam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-07, name='Nadam'),
-        optimizers.Adam(0.001),
-    ]
-    return optims

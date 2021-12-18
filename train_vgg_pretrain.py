@@ -69,14 +69,16 @@ train_label = le.fit_transform(train_label)
 val_label = le.fit_transform(val_label)
 test_label = le.transform(test_label)
 
-# initialize the optimizer and model
+"""initialize the model and optimizer"""
 epochs = 120
 batch_size = 32
 print("[INFO] compiling model...")
-opt = SGD(learning_rate=0.01, decay=0.01 / epochs, momentum=0.9, nesterov=True)
-model_vgg.compile(optimizer=opt, loss="categorical_crossentropy", metrics=["accuracy"])
+opt = utils.model_optims(epochs)
+model_vgg.compile(optimizer=opt[2], loss="categorical_crossentropy", metrics=["accuracy"])
 
+""" Training model"""
 print("[INFO] training network...")
+callbacks = utils.model_callbacks()
 augmentation = False
 if augmentation:
     # construct the image generator for data augmentation
@@ -85,11 +87,13 @@ if augmentation:
     # Train the networks with data augmentation
     H = model_vgg.fit_generator(aug.flow(train_data, train_label, batch_size=batch_size),
                                 validation_data=(val_data, val_label),
-                                steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1)
+                                steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1,
+                                callbacks=callbacks, use_multiprocessing=True)
 else:
     # train the network
     H = model_vgg.fit(train_data, train_label, validation_data=(val_data, val_label),
-                      batch_size=batch_size, epochs=epochs, verbose=1)
+                      batch_size=batch_size, epochs=epochs, verbose=1,
+                      callbacks=callbacks, use_multiprocessing=True)
 
 # evaluate the network
 print("[INFO] evaluating network...")
