@@ -74,7 +74,7 @@ epochs = 120
 batch_size = 32
 print("[INFO] compiling model...")
 opt = utils.model_optims(epochs)
-model_vgg.compile(optimizer=opt[2], loss="categorical_crossentropy", metrics=["accuracy"])
+model_vgg.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=["accuracy"])
 
 """ Training model"""
 print("[INFO] training network...")
@@ -104,10 +104,10 @@ print(classification_report(test_label.argmax(axis=1),
 # plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, epochs), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, epochs), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, epochs), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, epochs), H.history["val_accuracy"], label="val_acc")
+plt.plot(np.arange(0, H.epochs), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, H.epochs), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, H.epochs), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, H.epochs), H.history["val_accuracy"], label="val_acc")
 plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
