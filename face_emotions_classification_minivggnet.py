@@ -44,11 +44,9 @@ opt = utils.model_optims(epochs)
 model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
 
 """ Training model"""
-batch_size = 256
-callbacks = utils.model_callbacks()
-augmentation = False
-
 print("[INFO] training network...")
+batch_size = 256
+augmentation = False
 if augmentation:
     # construct the image generator for data augmentation
     aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1, height_shift_range=0.1,
@@ -57,12 +55,12 @@ if augmentation:
     H = model.fit(aug.flow(train_data, train_label, batch_size=batch_size),
                   validation_data=(val_data, val_label),
                   steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1,
-                  callbacks=callbacks, use_multiprocessing=True)
+                  use_multiprocessing=True)
 else:
     # train the network
     H = model.fit(train_data, train_label, validation_data=(val_data, val_label),
                   batch_size=batch_size, epochs=epochs, verbose=1,
-                  callbacks=callbacks, use_multiprocessing=True)
+                  use_multiprocessing=True)
 
 """ Evaluate the network """
 print("[INFO] evaluating network...")
