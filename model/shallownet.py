@@ -2,6 +2,7 @@ from tensorflow.keras.layers import Conv2D, Activation, Flatten, Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import backend
 
+
 class ShallowNet:
     @staticmethod
     def build(width, height, depth, classes):
@@ -24,4 +25,3 @@ class ShallowNet:
 
         # return the constructed network architecture
         return model
-
