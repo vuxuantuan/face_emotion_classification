@@ -1,5 +1,4 @@
 from model import ShallowNet
-from tensorflow.keras.optimizers import SGD
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import classification_report
 from tensorflow.keras import backend
