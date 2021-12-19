@@ -39,7 +39,6 @@ test_label = le.transform(test_label)
 model_dcnn = DCNN.build(height, width, depth, classes)
 print("[INFO] compiling model...")
 epochs = 200
-
 opt = utils.model_optims(epochs)
 model_dcnn.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=["accuracy"])
 

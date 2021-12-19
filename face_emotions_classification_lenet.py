@@ -5,77 +5,31 @@ from sklearn.metrics import classification_report
 from tensorflow.keras import backend
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas
-
-import matplotlib
-matplotlib.use("Agg")
 from keras.preprocessing.image import ImageDataGenerator
-
-datagen = ImageDataGenerator(
-        featurewise_center=False,
-        samplewise_center=False,
-        featurewise_std_normalization=False,
-        samplewise_std_normalization=False,
-        zca_whitening=False,
-        rotation_range=10,
-        zoom_range = 0.0,
-        width_shift_range=0.1,
-        height_shift_range=0.1,
-        horizontal_flip=False,
-        vertical_flip=False)
+import utils
+import config
 
 """load data from csv"""
-data = pandas.read_csv("fer2013.csv")
-
-# convert data to image, label and split data to trainData, valData, testData
-train_data = []
-train_label = []
-val_data = []
-val_label = []
-test_data = []
-test_label = []
-for index, row in data.iterrows():
-    emotion = row['emotion']
-    pixels = row['pixels']
-    usage = row['Usage']
-
-    list_pixels = pixels.split()
-    list_pixels = [int(pixel) for pixel in list_pixels]
-
-    image = np.reshape(list_pixels, (48, 48))
-
-    if usage == "train":
-        train_data.append(image)
-        train_label.append(emotion)
-    elif usage == "val":
-        val_data.append(image)
-        val_label.append(emotion)
-    elif usage == "test":
-        test_data.append(image)
-        test_label.append(emotion)
-
-# convert list to numpy array
-train_data = np.array(train_data)
-train_label = np.array(train_label)
-val_data = np.array(val_data)
-val_label = np.array(val_label)
-test_data = np.array(test_data)
-test_label = np.array(test_label)
+height = 48
+width = 48
+depth = 1
+classes = 7
+"""Load data from csv"""
+train_data, train_label, val_data, val_label, test_data, test_label = utils.load_data_from_csv(config.data_fer, False)
 
 if backend.image_data_format() == "channels_first":
-    train_data = train_data.reshape((train_data.shape[0], 1, 48, 48))
-    val_data = val_data.reshape((val_data.shape[0], 1, 48, 48))
-    test_data = test_data.reshape((test_data.shape[0], 1, 48, 48))
+    train_data = train_data.reshape((train_data.shape[0], depth, height, width))
+    val_data = val_data.reshape((val_data.shape[0], depth, height, width))
+    test_data = test_data.reshape((test_data.shape[0], depth, height, width))
 else:
-    train_data = train_data.reshape((train_data.shape[0], 48, 48, 1))
-    val_data = val_data.reshape((val_data.shape[0], 48, 48, 1))
-    test_data = test_data.reshape((test_data.shape[0], 48, 48, 1))
+    train_data = train_data.reshape((train_data.shape[0], height, width, depth))
+    val_data = val_data.reshape((val_data.shape[0], height, width, depth))
+    test_data = test_data.reshape((test_data.shape[0], height, width, depth))
 
 # scale data to the range of [0, 1]
 train_data = train_data.astype("float32") / 255.0
 val_data = val_data.astype("float32") / 255.0
 test_data = test_data.astype("float32") / 255.0
-datagen.fit(train_data)
 
 # convert the labels from integers to vectors
 le = LabelBinarizer()
@@ -86,33 +40,48 @@ test_label = le.transform(test_label)
 # LeNet
 # initialize the optimizer and model
 print("[INFO] compiling model...")
-# opt = SGD(lr=0.01)
-opt = Adam(learning_rate=0.0001)
 model = LeNet.build(width=48, height=48, depth=1, classes=7)
+epochs = 64
+opt = utils.model_optims(epochs)
 model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
 
-# train the network
+""" Training model"""
+batch_size = 256
+callbacks = utils.model_callbacks()
+augmentation = False
+
 print("[INFO] training network...")
-H = model.fit(train_data, train_label,
-              validation_data=(val_data, val_label), batch_size=128,
-              epochs=64, verbose=1)
+if augmentation:
+    # construct the image generator for data augmentation
+    aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1, height_shift_range=0.1,
+                             shear_range=0.2, zoom_range=0.2, horizontal_flip=True, fill_mode='nearest')
+    # Train the networks with data augmentation
+    H = model.fit(aug.flow(train_data, train_label, batch_size=batch_size),
+                  validation_data=(val_data, val_label),
+                  steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1,
+                  callbacks=callbacks, use_multiprocessing=True)
+else:
+    # train the network
+    H = model.fit(train_data, train_label, validation_data=(val_data, val_label),
+                  batch_size=batch_size, epochs=epochs, verbose=1,
+                  callbacks=callbacks, use_multiprocessing=True)
 
-# evaluate the network
+""" Evaluate the network """
 print("[INFO] evaluating network...")
-predictions = model.predict(test_data, batch_size=128)
+predictions = model.predict(test_data, batch_size=batch_size)
 print(classification_report(test_label.argmax(axis=1),
-                            predictions.argmax(axis=1),
-                            target_names=[str(x) for x in le.classes_]))
+                            predictions.argmax(axis=1), target_names=[str(x) for x in le.classes_]))
 
-# plot the training loss and accuracy
+""" Plot the training loss and accuracy """
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, 64), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, 64), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, 64), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, 64), H.history["val_accuracy"], label="val_acc")
+plt.plot(np.arange(0, len(H.history["loss"])), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, len(H.history['val_loss'])), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, len(H.history['accuracy'])), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, len(H.history['val_accuracy'])), H.history["val_accuracy"], label="val_acc")
 plt.title("train Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend()
+plt.savefig(f"Loss_Accuracy_LeNet_Augmentation_{augmentation}.png")
 plt.show()
