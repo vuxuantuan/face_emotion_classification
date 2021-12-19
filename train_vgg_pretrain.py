@@ -71,7 +71,7 @@ epochs = 120
 batch_size = 32
 print("[INFO] compiling model...")
 opt = utils.model_optims(epochs)
-model_vgg.compile(optimizer=opt[1], loss="categorical_crossentropy", metrics=["accuracy"])
+model_vgg.compile(optimizer=opt[2], loss="categorical_crossentropy", metrics=["accuracy"])
 
 """ Training model"""
 print("[INFO] training network...")

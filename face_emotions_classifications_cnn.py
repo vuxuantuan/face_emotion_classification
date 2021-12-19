@@ -42,7 +42,7 @@ print("[INFO] compiling model...")
 model = CNN.build(width=48, height=48, depth=1, classes=7)
 epochs = 64
 opt = utils.model_optims(epochs)
-model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
+model.compile(loss="categorical_crossentropy", optimizer=opt[2], metrics=["accuracy"])
 
 """ Training model"""
 print("[INFO] training network...")
