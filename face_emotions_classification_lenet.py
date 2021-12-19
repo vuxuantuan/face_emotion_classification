@@ -55,11 +55,11 @@ if augmentation:
     # Train the networks with data augmentation
     H = model.fit(aug.flow(train_data, train_label, batch_size=batch_size),
                   validation_data=(val_data, val_label),
-                  steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1)
+                  steps_per_epoch=len(train_data) // batch_size, epochs=epochs, verbose=1, use_multiprocessing=True)
 else:
     # train the network
     H = model.fit(train_data, train_label, validation_data=(val_data, val_label),
-                  batch_size=batch_size, epochs=epochs, verbose=1)
+                  batch_size=batch_size, epochs=epochs, verbose=1, use_multiprocessing=True)
 
 """ Evaluate the network """
 print("[INFO] evaluating network...")

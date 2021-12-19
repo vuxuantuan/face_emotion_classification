@@ -40,7 +40,7 @@ test_label = le.transform(test_label)
 # initialize the optimizer and model
 print("[INFO] compiling model...")
 model = CNN.build(width=48, height=48, depth=1, classes=7)
-epochs = 800
+epochs = 1600
 opt = utils.model_optims(epochs)
 model.compile(loss="categorical_crossentropy", optimizer=opt[2], metrics=["accuracy"])
 
@@ -60,7 +60,8 @@ if augmentation:
 else:
     # train the network
     H = model.fit(train_data, train_label, validation_data=(val_data, val_label),
-                  batch_size=batch_size, epochs=epochs, verbose=1)
+                  batch_size=batch_size, epochs=epochs, verbose=1,
+                  use_multiprocessing=True)
 
 """ Evaluate the network """
 print("[INFO] evaluating network...")
