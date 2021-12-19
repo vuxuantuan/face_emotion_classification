@@ -40,7 +40,7 @@ test_label = le.transform(test_label)
 # initialize the optimizer and model
 print("[INFO] compiling model...")
 model = ShallowNet.build(width=48, height=48, depth=1, classes=7)
-epochs = 120
+epochs = 180
 opt = utils.model_optims(epochs)
 model.compile(loss="categorical_crossentropy", optimizer=opt[2], metrics=["accuracy"])
 
