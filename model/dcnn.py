@@ -1,8 +1,6 @@
-from tensorflow.keras import optimizers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Conv2D, MaxPooling2D
-from tensorflow.keras.layers import Dropout, BatchNormalization, LeakyReLU, Activation
-from tensorflow.keras.callbacks import Callback, EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.layers import Dropout, BatchNormalization
 from tensorflow.keras import backend
 
 

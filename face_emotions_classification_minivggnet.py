@@ -39,7 +39,7 @@ test_label = le.transform(test_label)
 # initialize the optimizer and model
 print("[INFO] compiling model...")
 model = MiniVGGNet.build(width=48, height=48, depth=1, classes=7)
-epochs = 64
+epochs = 200
 opt = utils.model_optims(epochs)
 model.compile(loss="categorical_crossentropy", optimizer=opt[2], metrics=["accuracy"])
 
