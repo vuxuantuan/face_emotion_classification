@@ -71,8 +71,6 @@ else:
     val_data = val_data.reshape((val_data.shape[0], 48, 48, 1))
     test_data = test_data.reshape((test_data.shape[0], 48, 48, 1))
 
-print(train_data[0].shape)
-print(train_label.shape)
 # scale data to the range of [0, 1]
 train_data = train_data.astype("float32") / 255.0
 val_data = val_data.astype("float32") / 255.0
