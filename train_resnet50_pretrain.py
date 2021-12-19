@@ -5,7 +5,7 @@ from sklearn.preprocessing import LabelBinarizer
 from tensorflow.keras import Model
 from tensorflow.keras import backend as K
 from tensorflow.keras.applications import ResNet50
-from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras.applications.resnet50 import preprocess_input
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
