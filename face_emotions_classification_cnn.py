@@ -47,7 +47,7 @@ model.compile(loss="categorical_crossentropy", optimizer=opt[2], metrics=["accur
 """ Training model"""
 print("[INFO] training network...")
 batch_size = 256
-augmentation = False
+augmentation = True
 if augmentation:
     # construct the image generator for data augmentation
     aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1, height_shift_range=0.1,
