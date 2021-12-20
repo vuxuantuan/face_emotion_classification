@@ -62,7 +62,7 @@ else:
     H = model_dcnn.fit(train_data, train_label, validation_data=(val_data, val_label),
                        batch_size=batch_size, epochs=epochs, verbose=1,
                        callbacks=callbacks, use_multiprocessing=True)
-model_dcnn.save(f"model_dcnn_aug_{augmentation}")
+model_dcnn.save(f"save_model/model_dcnn_aug_{augmentation}")
 
 """ Evaluate the network """
 print("[INFO] evaluating network...")
