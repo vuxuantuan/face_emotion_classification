@@ -76,7 +76,7 @@ model_vgg.compile(optimizer=opt[2], loss="categorical_crossentropy", metrics=["a
 """ Training model"""
 print("[INFO] training network...")
 callbacks = utils.model_callbacks()
-augmentation = False
+augmentation = True
 if augmentation:
     # construct the image generator for data augmentation
     aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1, height_shift_range=0.1,
