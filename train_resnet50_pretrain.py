@@ -84,6 +84,7 @@ else:
     H = model_resnet.fit(train_data, train_label, validation_data=(val_data, val_label),
                          batch_size=batch_size, epochs=epochs, verbose=1,
                          use_multiprocessing=True)
+model_resnet.save(f"model_resnet_aug_{augmentation}")
 
 # evaluate the network
 print("[INFO] evaluating network...")
